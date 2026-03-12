@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  password  String
+  token     String?   @unique
+  createdAt DateTime  @default(now())
+  workLogs  WorkLog[]
+}
+
+model Job {
+  id        Int       @id @default(autoincrement())
+  name      String
+  rate      Float     @default(50000)
+  createdAt DateTime  @default(now())
+  workLogs  WorkLog[]
+}
+
+model WorkLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  jobId      Int
+  startTime  DateTime  @default(now())
+  endTime    DateTime?
+  totalHours Float?
+  job        Job       @relation(fields: [jobId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([jobId])
+}
