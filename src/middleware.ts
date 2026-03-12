@@ -3,7 +3,8 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   // 1. Lấy token từ Cookie (Đây là cách an toàn nhất cho SSR)
-  const token = request.cookies.get("token")?.value;
+  const token = request.cookies.get("auth_token")?.value;
+  console.log(token);
 
   const { pathname } = request.nextUrl;
 
